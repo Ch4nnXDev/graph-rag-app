@@ -1,61 +1,70 @@
-# AI Agent API
+# Graph RAG App
 
-AI Agent API is a FastAPI-based backend that allows uploading files to S3, storing file metadata in MongoDB, maintaining relationships in Neo4j, and querying an AI-powered knowledge system using vector embeddings and a QA chain.
+**Graph RAG App** is a full-stack application that allows users to upload files, store metadata, maintain graph relationships, and query an AI-powered knowledge system.
 
 ## 🔹 Features
 
-- Upload files to AWS S3
-- Store file metadata in **MongoDB**
-- Store graph relationships (e.g., file connections, tags) in **Neo4j**
-- AI-powered query system using **vector embeddings** and **retrieval-based QA**
-- Asynchronous FastAPI backend
-- CORS enabled for frontend integration
+- Upload files to **AWS S3**  
+- Store file metadata in **MongoDB**  
+- Maintain graph relationships in **Neo4j**  
+- AI-powered query system using **vector embeddings** and retrieval-based QA  
+- **Asynchronous backend** with FastAPI  
+- **Frontend** with React, Tailwind CSS, and Axios  
+- CORS enabled for smooth backend-frontend communication  
 
 ---
 
 ## 🔹 Tech Stack
 
-- **Backend**: FastAPI (Python)
-- **AI Pipeline**: LangChain / Custom embedding + QA chain
-- **Database**: MongoDB (metadata) + Neo4j (graph relationships)
-- **File Storage**: AWS S3
-- **Async Driver**: Motor for MongoDB
-- **Neo4j Driver**: Official Python driver
+| Layer       | Technology                       |
+|------------ |---------------------------------|
+| Backend     | FastAPI (Python)                |
+| Frontend    | React + Tailwind CSS + Axios    |
+| AI Pipeline | LangChain / Custom embedding + QA chain |
+| Database    | MongoDB (metadata) + Neo4j (graph) |
+| File Storage| AWS S3                          |
+| Async Driver| Motor for MongoDB               |
+| Graph Driver| Neo4j official Python driver    |
 
 ---
 
 ## 🔹 Architecture Diagram
 
 ```plaintext
-          ┌────────────┐
-          │  Frontend  │
-          │ (React/Vue)│
-          └─────┬──────┘
-                │ HTTP Requests
-                ▼
-          ┌────────────┐
-          │  FastAPI   │
-          │  Backend   │
-          └─────┬──────┘
-      Upload / Query │
-          ┌─────────┴─────────┐
-          ▼                   ▼
-   ┌────────────┐        ┌────────────┐
-   │   AWS S3   │        │  MongoDB   │
-   │ (File Data)│        │ (Metadata) │
-   └────────────┘        └────────────┘
-                             │
-                             ▼
-                         ┌────────────┐
-                         │  Neo4j     │
-                         │ (Graph)    │
-                         └────────────┘
+            ┌────────────┐
+            │  Frontend  │
+            │ (React +   │
+            │ Tailwind + │
+            │  Axios)    │
+            └─────┬──────┘
+                  │ HTTP Requests
+                  ▼
+            ┌────────────┐
+            │  FastAPI   │
+            │  Backend   │
+            └─────┬──────┘
+        Upload / Query │
+            ┌─────────┴─────────┐
+            ▼                   ▼
+     ┌────────────┐        ┌────────────┐
+     │   AWS S3   │        │  MongoDB   │
+     │ (File Data)│        │ (Metadata) │
+     └────────────┘        └────────────┘
+                                 │
+                                 ▼
+                             ┌────────────┐
+                             │  Neo4j     │
+                             │ (Graph)    │
+                             └────────────┘
 
-  AI Pipeline:
-  ┌───────────────┐
-  │ Vector Store  │
-  │ + QA Chain    │
-  └───────────────┘
+  AI Pipeline (Vector-based QA):
+  ┌─────────────────────────┐
+  │ Documents from S3       │
+  │ ──> Cleaned / Preprocessed
+  │ ──> Embedded (Vector Store)
+  │ ──> QA Chain / Retrieval
+  └─────────────────────────┘
          ▲
          │
-  Documents loaded from S3 + cleaned + embedded
+     Answers returned
+     to Backend → Frontend
