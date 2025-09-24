@@ -2,13 +2,14 @@ import React from "react";
 import { uiStore } from "../store/docUpStore";
 import ChatArea from "./chatArea";
 import FileUpload from "./fileUpload";
+import FileViewArea from "./fileViewArea"
 export default function ChatWindow() {
 const activateWindow = uiStore((state) => state.window);
   return (
     <div className="flex flex-col flex-1 bg-white justify-between ">
       {activateWindow === "chat" && (
         <>
-          <h2 className="text-xl font-bold p-10 bg-white">Chat</h2>
+          <h2 className="text-2xl font-bold p-10 shadow-lg">Chat</h2>
           <ChatArea />
           
          
@@ -18,6 +19,7 @@ const activateWindow = uiStore((state) => state.window);
       {activateWindow === "upload" && (
         <>
           <h2 className="text-xl font-bold p-8">Upload Docs</h2>
+          <FileViewArea />
           <FileUpload />
           
          

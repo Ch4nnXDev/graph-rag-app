@@ -1,7 +1,7 @@
 from langchain.vectorstores import Chroma
 from chromadb import HttpClient
 
-chroma_client = HttpClient(host="localhost", port="8000")
+chroma_client = HttpClient(host="localhost", port="8001")
 def create_vector_store(documents, embedding):
     vector_store = Chroma(
         embedding_function=embedding,

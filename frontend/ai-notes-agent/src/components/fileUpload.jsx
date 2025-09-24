@@ -14,7 +14,20 @@ export default function FileUpload() {
             'application/msword': ['.doc', '.docx'],
         },
         onDrop: (acceptedFiles) => {
-            axios.post()
+
+          const fileList = new FormData();
+          acceptedFiles.forEach((file)=> {
+            fileList.append('files', file)
+          });
+            axios.post("http://localhost:8000/upload", fileList, {
+              headers: {
+                'Content-type': 'multipart/form-data',
+              }
+
+            }).then((response) => {
+              console.log("Success", response.data);
+            })
+            
         },
 
     });
@@ -25,17 +38,13 @@ export default function FileUpload() {
     <div
       {...getRootProps({
         className:
-          " h-full border-2 flex flex-col border-dashed border-gray-400 p-6 rounded-lg text-center cursor-pointer",
+          " flex flex-col border-gray-400 p-6 rounded-lg text-center cursor-pointer items-center m-6",
       })}
     >
+      <span>Click or Drag files here</span>
       <input {...getInputProps()} />
-      <p>Drag & drop files here, or click to select</p>
+      <img src="upfile.jpeg" alt="" className="w-20 h-20"></img>
 
-      <ul className="mt-4">
-        {acceptedFiles.map((file) => (
-          <li key={file.name} className="on-click:bg-blue">{file.name.split(".").pop()== "pdf" ? "📄 PDF File" : "🗂️ Other File"}</li>
-        ))}
-      </ul>
     </div>
   );
 }

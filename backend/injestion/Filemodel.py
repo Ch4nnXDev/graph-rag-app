@@ -8,3 +8,4 @@ class FileMetadata(BaseModel):
     content_type: str
     s3_path: str
     uploaded_at: datetime = Field(default_factory=datetime.utcnow)
+

@@ -7,14 +7,14 @@ import os
 from dotenv import load_dotenv
 
 
-from models.Filemodel import FileMetadata
-import neo4j_client
-import mongodb
-from embeddings import embedding
-from vector_store import create_vector_store
-from retrieverQA import create_qa_chain
-from splitter import text_splitter
-from Extract import extract_text
+from .Filemodel import FileMetadata
+
+from .mongodb import files_collection
+from .embeddings import embedding
+from .vector_store import create_vector_store
+from .retrieverQA import create_qa_chain
+from .splitter import text_splitter
+from .Extract import extract_text
 
 load_dotenv()
 
@@ -41,10 +41,12 @@ BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
 
 
 vector_store, retriever = create_vector_store([], embedding)
-qa_chain = None
+qa_chain = create_qa_chain(retriever) if retriever else None
 
-if retriever:
-    qa_chain = create_qa_chain(retriever)
+@app.get("/")
+def root():
+    return {"message": "API is running"}
+
 
 @app.post("/upload")
 async def upload_files(files: List[UploadFile] = File(...)):
@@ -72,7 +74,7 @@ async def upload_files(files: List[UploadFile] = File(...)):
         
         
         
-        await mongodb.files_collection.insert_one(file_metadata.dict(by_alias=True))
+        await files_collection.insert_one(file_metadata.dict(by_alias=True))
         uploaded.append(file_metadata)
         
         
@@ -85,5 +87,27 @@ def get_answer(question: str):
         return {"answer": answer}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-        
     
+@app.get("/files")
+def list_files():
+    files = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix="uploads/")
+    file_urls = {}
+
+    if "Contents" in files:
+        for file in files["Contents"]:
+            key = file["Key"]  # e.g. "uploads/mydoc.pdf"
+            filename = key.split("/")[-1]  # mydoc.pdf
+            extension = filename.split(".")[-1].lower()  # pdf
+
+            file_urls[key] = {
+                "url": s3.generate_presigned_url(
+                    'get_object',
+                    Params={'Bucket': BUCKET_NAME, 'Key': key},
+                    ExpiresIn=3600  # URL valid for 1 hour
+                ),
+                "type": extension
+            }
+
+    return {"file_urls": file_urls}
+
+
