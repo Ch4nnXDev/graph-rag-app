@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 class FileMetadata(BaseModel):
-    id: Optional[str] = Field(alias="_id")
+    id: Optional[str] = None
     filename: str
     content_type: str
     s3_path: str

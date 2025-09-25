@@ -6,7 +6,7 @@ import FileViewArea from "./fileViewArea"
 export default function ChatWindow() {
 const activateWindow = uiStore((state) => state.window);
   return (
-    <div className="flex flex-col flex-1 bg-white justify-between ">
+    <div className="flex flex-col flex-1 bg-white justify-between mb-10">
       {activateWindow === "chat" && (
         <>
           <h2 className="text-2xl font-bold p-10 shadow-lg">Chat</h2>

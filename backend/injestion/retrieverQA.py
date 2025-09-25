@@ -7,7 +7,8 @@ def create_qa_chain(retriever):
     hf_pipeline = pipeline(
         model="google/flan-t5-base",
         task="text2text-generation",
-        model_kwargs={"temperature": 0.1, "max_length": 512}
+        model_kwargs={"temperature": 0.7, "max_length": 512, "do_sample": True, "top_p": 0.9, "repetition_penalty": 1.2},
+        device_map="auto"
     )
 
     llm = HuggingFacePipeline(pipeline=hf_pipeline)
