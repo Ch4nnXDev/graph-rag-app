@@ -38,7 +38,7 @@ export default function FileUpload() {
     <div
       {...getRootProps({
         className:
-          " flex flex-col border-gray-400 p-6 rounded-lg text-center cursor-pointer items-center m-6",
+          " flex flex-col border-1 border-gray-300 p-6 rounded-lg text-center cursor-pointer items-center m-6",
       })}
     >
       <span>Click or Drag files here</span>
