@@ -23,7 +23,8 @@ load_dotenv()
 app = FastAPI(title="AI Agent API")
 
 # --- CORS ---
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173",
+           "http://localhost:8000"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -60,8 +61,8 @@ async def upload_files(files: List[UploadFile] = File(...)):
     all_new_documents = []
     for file in files:
         
-        file_content = file.file.read()
-        full_text = extract_text(BytesIO(file_content), file.filename)
+        file_content = file.file.read() #reading with the bytestream
+        full_text = extract_text(BytesIO(file_content), file.filename) 
         
         s3_path = f"uploads/{file.filename}"
         s3.upload_fileobj(BytesIO(file_content), BUCKET_NAME, s3_path)
@@ -124,26 +125,40 @@ def list_files():
     return {"file_urls": file_urls}
 
 
-@app.delete("/delete-all-files")
+@app.delete("/delete_all_files")
 async def delete_all_files():
     try:
-        # List all objects under 'uploads/'
-        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix="uploads/")
-        if "Contents" not in response:
+        # List all objects under 'uploads/' prefix
+        listed = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix="uploads/")
+        objects_to_delete = [{"Key": obj["Key"]} for obj in listed.get("Contents", [])]
+
+        if not objects_to_delete:
             return {"message": "No files to delete"}
 
-        objects_to_delete = [{"Key": obj["Key"]} for obj in response["Contents"]]
-
-        # Delete all files
-        s3.delete_objects(Bucket=BUCKET_NAME, Delete={"Objects": objects_to_delete})
+        # Delete in batches of 1000 (S3 API limit)
+        for i in range(0, len(objects_to_delete), 100):
+            batch = objects_to_delete[i:i+100]
+            if batch:
+                for file in batch:
+                    clear_vector_store(file["Key"])
+                    print(f"Cleared vector store entries for {file['Key']}")
+            
+            result = s3.delete_objects(Bucket=BUCKET_NAME, Delete={"Objects": batch})
+            
+            
+            print("Deleted:", result.get("Deleted", []))
+            print("Errors:", result.get("Errors", []))
 
         # Optional: remove all metadata from MongoDB
-        await files_collection.delete_many({"s3_path": {"$regex": "^uploads/"}})
+        await files_collection.delete_many({})
 
         return {"message": f"Deleted {len(objects_to_delete)} files from S3 and MongoDB"}
 
     except Exception as e:
+        import traceback
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 
@@ -162,3 +177,9 @@ def list_vector_docs():
         raise HTTPException(status_code=500, detail="Vector store not initialized")
     docs = vector_store.as_retriever().get_relevant_documents(" ")  # empty keyword to fetch all
     return {"documents": [d.metadata for d in docs]}
+
+
+
+def clear_vector_store(file):
+    vector_store.delete(where={"s3_path": file})
+    print("Cleared all the embeddings from the collection")

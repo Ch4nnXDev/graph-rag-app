@@ -44,8 +44,14 @@ export default function Sidebar() {
       </div>
 
       <div className="flex rounded-lg hover:bg-blue-700 p-2 w-full">
-        <Plus onClick={handlePlusClick} className="hover:cursor-pointer shrink-0 w-6 h-6 "/>
-        <span className="ml-4 text-sm">Documents</span>
+        <button
+          onClick={handlePlusClick}
+          className="flex items-center hover:cursor-pointer rounded-xl px-2 py-2 transition"
+        >
+          <Plus className="shrink-0 w-6 h-6" />
+          <span className="ml-3 text-sm">Documents</span>
+        </button>
+
       </div>
       <div className="flex rounded-lg hover:bg-blue-700 p-2">
         <NotepadText onClick={handleChatsClick} className="flex hover:cursor-pointer justify-between items-center shrink-0 w-6 h-6 "/>

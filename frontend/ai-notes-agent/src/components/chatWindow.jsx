@@ -32,6 +32,7 @@ async function handleDelete() {
         <>
           <h2 className="text-xl font-bold p-8">Upload Docs</h2>
           <button className="fixed bottom-4 right-4 bg-white text-black text-center px-4 py-2 rounded-2xl hover:cursor-pointer" onClick={handleDelete}><Trash2 /></button>
+
           <FileViewArea />
           <FileUpload />
           

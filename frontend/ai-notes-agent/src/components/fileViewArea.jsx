@@ -20,7 +20,7 @@ export default function FileViewArea() {
             }
         };
         fetchFiles();
-        const interval = setInterval(fetchFiles, 10000);
+        const interval = setInterval(fetchFiles, 20000);
         return () => clearInterval(interval);
     }, []);
     console.log(files);
