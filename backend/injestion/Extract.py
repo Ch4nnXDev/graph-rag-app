@@ -1,4 +1,5 @@
 from langchain_unstructured import UnstructuredLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from typing import List
 from langchain.schema import Document
 from io import BytesIO
@@ -9,6 +10,11 @@ class DocumentProcessor:
     
     def __init__(self):
            self.loader = UnstructuredLoader
+           self.splitter = RecursiveCharacterTextSplitter(
+               chunk_size=200,
+               chunk_overlap=50
+               
+           )
 
     def load_document(self, document):
       loader = self.loader(file_path=document, strategy="hi_res", languages=["eng"])
@@ -20,7 +26,7 @@ class DocumentProcessor:
         for doc in documents:
             metadata = doc.metadata
             text = doc.page_content
-            text = re.sub(r'\s+ \d+', ' ', text)
+            text = re.sub(r'\s+\d+', ' ', text)
             clean_docs.append(
                 Document(
                     page_content=text,
@@ -30,7 +36,11 @@ class DocumentProcessor:
         
         return clean_docs
     
-    def extract(self, clean_docs):
+    def chunk_documents(self, clean_docs):
+        chunked_docs = self.splitter.split_documents(clean_docs)
+        return chunked_docs
+            
+         
         
             
 
