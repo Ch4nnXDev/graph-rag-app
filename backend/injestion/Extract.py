@@ -1,8 +1,6 @@
 from langchain_unstructured import UnstructuredLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from typing import List
 from langchain.schema import Document
-from io import BytesIO
 import re
 
 
