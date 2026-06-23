@@ -16,7 +16,7 @@ from .embeddings import embedding
 from .vector_store import create_vector_store
 from .retrieverQA import create_qa_chain
 from .splitter import text_splitter
-from .Extract import extract_text
+from .InjestionService.InjestionService import extract_text
 
 load_dotenv()
 
