@@ -39,12 +39,6 @@ class DocumentProcessor:
         return chunked_docs
             
          
-first = DocumentProcessor()
-bb = first.load_document("../data/Binomial and Bernouli Distributions.pdf")
-second = first.clean_documents(bb)
-third = first.chunk_documents(second)
-print(third)
-            
 
 
 
