@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from .Filemodel import FileMetadata
 
 from .mongodb import files_collection
-from .embeddings import embedding
+from .embeddingService.embeddingService import embedding
 from .vector_store import create_vector_store
 from .retrieverQA import create_qa_chain
 from .splitter import text_splitter
