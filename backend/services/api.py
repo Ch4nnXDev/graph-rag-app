@@ -14,7 +14,7 @@ from .Filemodel import FileMetadata
 from .mongodb import files_collection
 from .embeddingService.embeddingService import embedding
 from .vector_store import create_vector_store
-from .retrieverQA import create_qa_chain
+from .inferenceService.inferenceService import create_qa_chain
 from .splitter import text_splitter
 from .InjestionService.InjestionService import extract_text
 
