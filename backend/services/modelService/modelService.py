@@ -3,8 +3,7 @@ from langchain_huggingface import HuggingFacePipeline
 from transformers import pipeline
 class modelService:
     def __init__(self, model_name):
-        self.model = model_name
-        self.pipeline = None
+        self.model_name = model_name
         self.llm = None
         
     def load_model(self):
@@ -15,7 +14,7 @@ class modelService:
             device_map="auto"
         )
         
-        llm = HuggingFacePipeline(pipeline=huggingface_pipeline)
-        return llm
+        self.llm = HuggingFacePipeline(pipeline=huggingface_pipeline)
+        return self.llm
         
         
