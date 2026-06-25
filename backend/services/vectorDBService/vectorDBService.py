@@ -11,7 +11,7 @@ class VectorStore:
             embedding_function=embedding,
             client=self.chroma_client,
             collection_name="ai_agent_collection",
-            presist_directory="./chroma_db"
+            persist_directory="./chroma_db"
         )
         
         return vector_store
