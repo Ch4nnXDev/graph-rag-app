@@ -1,18 +1,12 @@
-from langchain_unstructured import UnstructuredLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import re
 
 
 class DocumentProcessor:
     
-    def __init__(self):
-           self.loader = UnstructuredLoader
-           self.splitter = RecursiveCharacterTextSplitter(
-               chunk_size=200,
-               chunk_overlap=50
-               
-           )
+    def __init__(self, loader, splitter):
+           self.loader = loader
+           self.splitter = splitter
 
     def load_document(self, document):
       loader = self.loader(file_path=document, strategy="hi_res", languages=["eng"])
@@ -24,7 +18,7 @@ class DocumentProcessor:
         for doc in documents:
             metadata = doc.metadata
             text = doc.page_content
-            text = re.sub(r'\s+\d+', ' ', text)
+            text = re.sub(r'Page\s+\d+', ' ', text)
             clean_docs.append(
                 Document(
                     page_content=text,
