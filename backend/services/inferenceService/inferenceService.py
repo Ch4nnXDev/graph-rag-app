@@ -6,13 +6,13 @@ from langchain.chains import RetrievalQA
 
 
 class InferenceService:
-    def __init__(self, model):
-        self.model = model
-        
     
-    def create_qa_chain(self, llm, retriever):
+    def __init__(self, llm):
+        self.llm = llm
+    
+    def create_qa_chain(self, retriever):
         qa_chain = RetrievalQA.from_chain_type(
-            llm=llm,
+            llm=self.llm,
             retriever=retriever,
             return_source_documents=True,
             chain_type_kwargs={"prompt": teacher_prompt}
