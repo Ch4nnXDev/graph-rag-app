@@ -1,4 +1,3 @@
-from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
 
 class HFEmbeddingModel(Embeddings):
