@@ -14,6 +14,14 @@ class ChatService:
         embedding = self.dependancy.embeddingService.embed_documents(doc)
         return embedding
     
+    def create_vector_store(self, embedding):
+        vector_store = self.dependancy.vectorDBService.create_vector_store(embedding)
+        return vector_store
+    
+    def create_vector_retriever(self, vector_store):
+        retriever = self.dependancy.vectorDBService.create_vector_retriever(vector_store)
+        return retriever
+
     
         
         

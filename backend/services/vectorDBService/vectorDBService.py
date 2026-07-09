@@ -4,8 +4,7 @@ from chromadb import HttpClient
 class VectorStore:
     def __init__(self):
         self.chroma_client = HttpClient(host="localhost", port="8001")
-        
-        
+         
     def create_vector_store(self, embedding):
         vector_store = Chroma(
             embedding_function=embedding,
