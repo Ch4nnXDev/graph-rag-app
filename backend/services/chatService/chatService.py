@@ -7,12 +7,10 @@ class ChatService:
         
         
         
-        self.vector_store = self.dependancy.vectorService().create_vector_store(
-            self.dependacy.embeddingService()
-        )
+      
         
         self.retriever = self.dependancy.vectorService().create_vector_retriever(
-            self.vector_store
+            self.dependancy.vector_store
         )
         
         self.qa_chain = self.dependancy.inferenceService().create_qa_chain(
