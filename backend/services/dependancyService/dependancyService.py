@@ -14,4 +14,7 @@ class DependencyContainer:
         self.modelService = modelService('google/flan-t5-large')
         self.inferenceService = InferenceService(self.modelService.load_model())
         self.vectorService = VectorService()
+        self.vector_store = self.dependancy.vectorService().create_vector_store(
+            self.dependacy.embeddingService()
+        )
         
