@@ -6,22 +6,23 @@ class ChatService:
         self.dependancy = DependencyContainer()
         
         
-    def query_embedding(self, query):
-        embedding = self.dependancy.embeddingService.embed_query(query)
-        return embedding
-    
-    def query_document(self, doc):
-        embedding = self.dependancy.embeddingService.embed_documents(doc)
-        return embedding
-    
-    def create_vector_store(self, embedding):
-        vector_store = self.dependancy.vectorDBService.create_vector_store(embedding)
-        return vector_store
-    
-    def create_vector_retriever(self, vector_store):
-        retriever = self.dependancy.vectorDBService.create_vector_retriever(vector_store)
-        return retriever
-
+        
+        self.vector_store = self.dependancy.vectorService().create_vector_store(
+            self.dependacy.embeddingService()
+        )
+        
+        self.retriever = self.dependancy.vectorService().create_vector_retriever(
+            self.vector_store
+        )
+        
+        self.qa_chain = self.dependancy.inferenceService().create_qa_chain(
+            self.retriever
+        )
+        
+    def answer(self, query):
+        return self.qa_chain.invoke({"query": query})
+            
+            
     
         
         
