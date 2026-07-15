@@ -1,3 +1,4 @@
+import React from "react";
 export default function Home() {
     <section className="flex flex-1 bg-red-400">
         <div>

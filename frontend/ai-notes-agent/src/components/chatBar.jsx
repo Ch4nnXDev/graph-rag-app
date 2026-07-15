@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { ArrowUpIcon } from "lucide-react";
 
 export default function Chatbar({ sendInput }) {
