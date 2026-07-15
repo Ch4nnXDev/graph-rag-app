@@ -1,4 +1,4 @@
-from backend.services.dependancyService.dependancyService import DependencyContainer
+from services.dependancyService.dependancyService import DependencyContainer
 
 
 class ChatService:

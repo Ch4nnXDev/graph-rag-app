@@ -1,4 +1,4 @@
-from backend.services.dependancyService import DependancyContainer
+from services.dependancyService import DependancyContainer
 
 class DocumentService:
     def __init__(self):

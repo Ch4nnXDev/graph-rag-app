@@ -1,4 +1,3 @@
-from langchain.chain import RetrieverQA
 from langchain_huggingface import HuggingFacePipeline
 from transformers import pipeline
 class modelService:
