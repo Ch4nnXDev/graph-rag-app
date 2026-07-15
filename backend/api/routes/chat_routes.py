@@ -1,11 +1,12 @@
 from fastapi import APIRouter
-from ...services.chatService import chatService
+from services.chatService.chatService import ChatService
+from dto.chat_schema import ChatDTO
 
-chat = chatService()
+chat = ChatService()
 
 router = APIRouter()
 
-router.post("/chat")
-def chat(query):
-    return query
+@router.post("/ask")
+def ask(query: ChatDTO):
+    return chat.answer(query)
 
